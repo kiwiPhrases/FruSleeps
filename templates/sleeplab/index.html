@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+    <label for="title">Who put the Fru to sleep?</label>
+    {% if g.user %}
+        {% for parent in parents %}
+            <form method="post" id="username" action="confirm">
+                <button type="submit" value="{{ parent['username']}}" name="parent">{{ parent['username']}}</button>
+            </form>
+            
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+
