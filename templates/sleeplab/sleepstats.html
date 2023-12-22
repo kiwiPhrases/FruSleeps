@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Freya's Sleep Stats{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {{charts['meanTime']}}
+{% endblock %}

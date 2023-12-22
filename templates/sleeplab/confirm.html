@@ -7,8 +7,8 @@
 {% block content %}
   <form method="post" action="mkrecord">
     <label for="parent">Parent</label>
-    <input name="parent" id="parent" value="{{ formvals['parent'] }}" disabled="disabled">
-    <input name="parentid" id="parentid" value="{{ formvals['parentid'] }}" type="hidden">
+    <input name="parent" id="parent" value="{{ formvals['parent'] }}" readonly="readonly">
+    <!--<input name="parentid" id="parentid" value="{{ formvals['parentid'] }}" type="hidden">-->
     <label for="date">Date</label>
     <input name="date" id="sleepdate" value="{{ formvals['sleepdate'] }}" required>
     <label for="time">Time</label>

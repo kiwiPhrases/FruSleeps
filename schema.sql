@@ -9,8 +9,8 @@ CREATE TABLE user (
 
 CREATE TABLE sleepTimes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    sleeperid INTEGER NOT NULL,
+    parent INTEGER NOT NULL,
     sleepdate TEXT NOT NULL,
     sleeptime TEXT NOT NULL,
-    FOREIGN KEY (sleeperid) REFERENCES user (id)
+    FOREIGN KEY (parent) REFERENCES user (username)
 );

@@ -43,8 +43,8 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
 
     # incorporate Dash app
-    from .plotlydash.dashboard import create_dashboard
-    app = create_dashboard(app)
+    from .plotlydash.dashboard import init_dashboard
+    app = init_dashboard(app)
 
     
     return app
