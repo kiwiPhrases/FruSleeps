@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, session
 )
 from werkzeug.exceptions import abort
 
@@ -10,18 +10,26 @@ bp = Blueprint('sleeplab', __name__)
 
 @bp.route('/')
 def index():
-    # connect to db
-    db = get_db()
+    munchkin = session.get('username')
 
-    # grab the parent names
-    # this assumes both parents are users in the app
-    query = """
-    SELECT id, username
-    FROM user ORDER BY username
-    """
-    parents = db.execute(query).fetchall()
+    if munchkin is None:
+        return redirect(url_for("auth.login"))
+    if munchkin is not None:
+        # connect to db
+        db = get_db()
 
-    return render_template('sleeplab/index.html',parents=parents)
+        # grab the parent names
+        # this assumes both parents are users in the app
+        query = """
+        SELECT parent
+        FROM parents 
+        WHERE munchkin=?
+        ORDER BY parent
+        """
+        parents = db.execute(query,(session['username'],)).fetchall()
+
+        #eturn("|".join(parents[0]))#
+        return(render_template('sleeplab/index.html',parents=parents))
 
 @bp.route("/confirm",methods=("GET",'POST'))
 def confirm():
@@ -63,10 +71,11 @@ def mkrecord():
     db = get_db()
     
     if request.method=='POST':
+        munchkin = session.get('username')
         #return "|".join(request.form.keys())
-        db.execute('INSERT INTO sleepTimes (parent, sleepdate, sleeptime)'
-                   'VALUES (?,?,?)',
-                   (request.form['parent'],request.form['date'],request.form['time']))
+        db.execute('INSERT INTO sleepTimes (munchkin,parent, sleepdate, sleeptime)'
+                   'VALUES (?,?,?,?)',
+                   (munchkin,request.form['parent'],request.form['date'],request.form['time']))
         db.commit()
     #return redirect(url_for("index"))
     return redirect("/sleepstats")

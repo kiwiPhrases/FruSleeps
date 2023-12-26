@@ -1,0 +1,20 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+
+{% block content %}
+  <form method="post">
+    <!-- this is separate and goes to the parent db-->
+    <label for="parent1">Caregiver 1</label>
+    <input name="parent1" id="parent1" required>
+    <label for="parent2">Caregiver 2</label>
+    <input name="parent2" id="parent2" required>
+
+    <!-- submit the form-->
+    <input type="submit" value="Register">
+  </form>
+{% endblock %}

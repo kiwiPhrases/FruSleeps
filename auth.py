@@ -12,22 +12,17 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 # function for registering users
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-    # grab username and password from the   page
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         db = get_db()
         error = None
 
-        # if empty, return these errors
         if not username:
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
 
-        # check if ther username is already in the db or not
-        # if already in there, return an error
-        # otherwise, commit to the db
         if error is None:
             try:
                 db.execute(
@@ -37,19 +32,18 @@ def register():
                 db.commit()
             except db.IntegrityError:
                 error = f"User {username} is already registered."
-            # redirect to the login page
             else:
                 return redirect(url_for("auth.login"))
-        # save error messages to display in the template
+
         flash(error)
 
     return render_template('auth/register.html')
+    
 
 # function for login
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        # grab user inputs
         username = request.form['username']
         password = request.form['password']
         db = get_db()
@@ -66,11 +60,61 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return redirect(url_for('index'))
+            session['username'] = user['username']
+            #return redirect(url_for('index'))
+            return redirect(url_for('auth.addparents'))
 
         flash(error)
 
-    return render_template('auth/login.html')    
+    return render_template('auth/login.html')
+
+# function for adding the parents
+@bp.route('/addparents', methods=('GET', 'POST'))
+def addparents():
+    # check if there are parents registered for this child
+    db = get_db()
+    
+    # fetch current user
+    username = session.get('username')
+
+    parres = db.execute("SELECT parent FROM parents WHERE munchkin=?",(username,)).fetchall()
+
+    # if there are no parents then add parents
+    # if there's at least 1 parent then redirect to index page
+    if len(parres)>=1:
+        return redirect(url_for('index'))
+    if len(parres)==0:
+        #return("%d" %len(parres))
+        if request.method=='POST': 
+            par1 = request.form['parent1']
+            par2 = request.form['parent2']
+            error = None
+            db = get_db()
+    
+            # check parent inputs. This forces two parents...not great but for now meh
+            if not par1:
+                error = "Caregiver 1 is required"
+            elif not par2:
+                error = "Caregiver 2 is required"
+
+            if error is None:
+                for par in [par1,par2]:
+
+                    try:
+                        db.execute(
+                            "INSERT INTO parents (munchkin, parent) VALUES (?, ?)",
+                            (username, par),
+                        )
+                        db.commit()
+                    except db.IntegrityError:
+                        error = f"Parent {par} is already registered."
+                        flash(error)
+                    else:
+                        return redirect(url_for("index"))                  
+            # save error messages to display in the template
+            flash(error)
+
+        return render_template('auth/addparents.html')        
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -87,7 +131,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('sleeplab.index'))            
+    return redirect(url_for('auth.login'))            
 
 def login_required(view):
     @functools.wraps(view)

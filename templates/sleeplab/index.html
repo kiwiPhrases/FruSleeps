@@ -9,7 +9,7 @@
     {% if g.user %}
         {% for parent in parents %}
             <form method="post" id="username" action="confirm">
-                <button type="submit" value="{{ parent['username']}}" name="parent">{{ parent['username']}}</button>
+                <button type="submit" value="{{ parent['parent']}}" name="parent">{{ parent['parent']}}</button>
             </form>
             
         {% endfor %}
