@@ -42,9 +42,15 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
+    # register sleep dash blueprint
+    from . import sleepdash
+    app.register_blueprint(sleepdash.bp)
+    app.add_url_rule("/",endpoint='sleepdash')
+    
     # incorporate Dash app
-    from .plotlydash.dashboard import init_dashboard
-    app = init_dashboard(app)
+    # this is super tedious. It's literally easier to just write plotly into Flask
+    #from .plotlydash.dashboard import init_dashboard
+    #app = init_dashboard(app)
 
     
     return app

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Freya's Sleeping Stats</h1>
+{% endblock %}
+
+{% block content %}
+<div id='chart'></div>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    var graphs = {{graphs['avgGraph'] | safe}};
+    Plotly.plot('chart',graphs,{});        
+</script>
+
+<div id='chart2'></div>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    var graphs = {{graphs['timeGraph'] | safe}};
+    Plotly.plot('chart2',graphs,{});        
+</script>
+
+{% endblock %}

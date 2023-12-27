@@ -78,19 +78,6 @@ def mkrecord():
                    (munchkin,request.form['parent'],request.form['date'],request.form['time']))
         db.commit()
     #return redirect(url_for("index"))
-    return redirect("/sleepstats")
-
-#@bp.route("/sleepstats")
-#def sleepstats():
-
-@bp.route("/sleepstats2")
-def sleepstats2():
-    import pandas as pd
-    db = get_db()
-    query = "SELECT * FROM sleepTimes slp"
-    #df2 = db.execute(query)
-    df = pd.read_sql(query,con=db)
-    return(df.to_html())
-
+    return redirect("/sleepdash")
 
 

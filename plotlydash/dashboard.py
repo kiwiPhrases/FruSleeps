@@ -4,6 +4,7 @@ from dash import dcc
 from dash import html
 import plotly.express as px
 import pandas as pd
+from bs4 import BeautifulSoup
 
 
 from FruSleeps.db import get_db
@@ -17,7 +18,8 @@ def init_dashboard(server):
     """Create a Plotly Dash dashboard."""
     dash_app = Dash(
         server=server,
-        routes_pathname_prefix='/sleepstats/',
+        url_base_pathname = "/sleepstats/",
+        #routes_pathname_prefix='/sleepstats/',
         external_stylesheets=[
             '/static/styles.css',
         ]
@@ -58,6 +60,14 @@ def init_dashboard(server):
         id='dash-container')
     meanTime = dcc.Graph(figure=px.bar(summary,x='parent',y='time'))
     longit = dcc.Graph(figure=px.line(x=df.wholetime.dt.date, y=df.time/60,labels={'x': 'Date', 'y':'Time'}))
-    return dash_app.server
+    
+    #soup = BeautifulSoup(dash_app.index(), 'html.parser')
+    #footer = soup.footer
+    #return render_template('sleepstats.html', footer=footer)
+
+    return("Hello world!")
+    #return dash_app.server
     #with server.app_context():
-    #    return render_template('sleeplab/sleepstats.html',charts={"meanTime":meanTime,'Longitude':longit})
+    #    outtempl =  render_template('sleeplab/sleepstats.html',charts={"meanTime":meanTime,'Longitude':longit})
+
+    #return outtempl
