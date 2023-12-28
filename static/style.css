@@ -26,7 +26,7 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content textarea { min-height: 12em; resize: vertical; }
 input.danger { color: #cc2f2e; }
 /*input.textbox {background:#a3eaff; padding: 1px; font-size: 1em;}*/
-input[type=submit] { align-self: start; min-width: 5em; }
+
 /*label {color:#863aff; font-weight: bold; font-size:1.2em;}*/
 
 
@@ -81,6 +81,12 @@ input[type=submit] { align-self: start; min-width: 5em; }
   }
 }
 
+
+div.group {display:column;
+    flex-direction: row;
+     justify-content: center;
+      align-items: center;
+    max-width:60%}
 label.label {
        margin-right:15px;
        color:#9756ff;
@@ -90,7 +96,7 @@ label.label {
        float:left;
     }
 input.input {border-radius:5px;
-     text-align:center;
+    text-align:center;
     background:#00327e;
     padding:5px;
     font-size:1em;
@@ -98,9 +104,28 @@ input.input {border-radius:5px;
     box-shadow:0px;
     outline:0px;
     border:0px;
-float:right}
-.group {display:column;
-     flex-direction: row;
-      justify-content: center;
-       align-items: center;
-    margin: 0 auto;}
+float:right;}
+/*input[type=submit] { align-self: start; min-width: 5em; }*/
+
+.login {display:grid;
+    flex-direction: row;
+     justify-content: center;
+      align-items: center;}
+input.login {border-radius:5px;
+  text-align:center;
+ background:#00327e;
+ padding:5px;
+ max-width:100%;
+ font-size:1em;
+ color:#c29dff;
+ box-shadow:0px;
+ outline:0px;
+ border:0px;}
+ ::placeholder {
+    color: #cccccc;
+    font-weight:bold;
+    opacity: 1; /* Firefox */
+  }
+  input:focus::placeholder {
+    color: transparent;
+  }

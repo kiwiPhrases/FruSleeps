@@ -10,8 +10,8 @@ CREATE TABLE user (
 
 CREATE TABLE parents (
   munchkin TEXT NOT NULL,
-  parent TEXT UNIQUE NOT NULL
-  --FOREIGN key (munchkin) references user (username)
+  parent TEXT NOT NULL,
+  FOREIGN key (munchkin) references user (username)
 );
 
 CREATE TABLE sleepTimes (
@@ -19,6 +19,6 @@ CREATE TABLE sleepTimes (
     munchkin TEXT NOT NULL,
     parent TEXT NOT NULL,
     sleepdate TEXT NOT NULL,
-    sleeptime TEXT NOT NULL
-    --FOREIGN KEY (parent) REFERENCES parents (parent)
+    sleeptime TEXT NOT NULL,
+    FOREIGN KEY (parent) REFERENCES parents (parent)
 );

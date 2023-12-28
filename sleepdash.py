@@ -36,25 +36,26 @@ def sleepdash():
     
     # generate graphs
     # for colors check out: https://plotly.com/python/builtin-colorscales/
-    meanTime = px.bar(summary,x='parent',y='time',
-        color_discrete_sequence= px.colors.sequential.Viridis,
-        labels={'x':'Parent','y':'Average Time of Day'})
-        
+    meanTime = px.bar(x=summary.parent, y=summary.time,
+        labels={'x': 'Parent', 'y':'Time'},
+        color_discrete_sequence= px.colors.sequential.Viridis)
+
     meanTime.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         font={'color':'rgba(255, 95, 31, .9)','size':14})
 
     longit = px.line(x=df.wholetime.dt.date, y=df.time/60,
-        labels={'x': 'Date', 'y':'Time'},
-        color_discrete_sequence= px.colors.sequential.Viridis)
+        labels={'x': 'Date', 'y':'Time'})
+        #color_discrete_sequence= px.colors.sequential.Viridis)
 
     longit.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         font={'color':'rgba(255, 95, 31, .9)','size':14},
         xaxis={
             "type": 'date',
-            "tickformat": '%b %d, %Y',
+            "tickformat": '%b %d, %y',
             "dtick": 86400000.0})
+    longit.update_traces(line={'width':4,'color':'rgba(57, 255, 20,.9)'})
 
     bargraphJSON = json.dumps(meanTime, cls=plotly.utils.PlotlyJSONEncoder)
     timegraphJSON = json.dumps(longit, cls=plotly.utils.PlotlyJSONEncoder)

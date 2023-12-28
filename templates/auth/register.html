@@ -6,14 +6,26 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
-    <!-- this is the username registration portion-->
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
 
-    <!-- submit the form-->
-    <input type="submit" value="Register">
-  </form>
+
+<form method="post">
+  <div class="login">
+    <!--<label class='login' for="username">Username</label>-->
+    <input class='login'  name="username" id="username" placeholder="Username" required>
+  </div>
+  <div class="login">
+    <!--<label class='login'  for="password">Password</label>-->
+    <input class='login'  type="password" name="password" id="password" placeholder="Password" required>
+  </div>
+  <div class="login">
+    <!--<label class='login'  for="password">Password</label>-->
+    <input class='login'  type="password" name="repassword" id="repassword" placeholder="Confirm Password" required>
+  </div>
+  <div class="login">
+    <input class='button-64'  type="submit" value="Register">
+  </div>
+</form>
+</script>
+
+
 {% endblock %}

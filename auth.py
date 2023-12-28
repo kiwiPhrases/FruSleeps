@@ -15,6 +15,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        repassword = request.form['repassword']
         db = get_db()
         error = None
 
@@ -22,6 +23,8 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif password!=repassword:
+            error = 'Passwords do not match'
 
         if error is None:
             try:
@@ -81,9 +84,9 @@ def addparents():
 
     # if there are no parents then add parents
     # if there's at least 1 parent then redirect to index page
-    if len(parres)>=1:
+    if len(parres)>1:
         return redirect(url_for('index'))
-    if len(parres)==0:
+    if len(parres)<=1:
         #return("%d" %len(parres))
         if request.method=='POST': 
             par1 = request.form['parent1']
@@ -100,17 +103,13 @@ def addparents():
             if error is None:
                 for par in [par1,par2]:
 
-                    try:
                         db.execute(
                             "INSERT INTO parents (munchkin, parent) VALUES (?, ?)",
                             (username, par),
                         )
                         db.commit()
-                    except db.IntegrityError:
-                        error = f"Parent {par} is already registered."
-                        flash(error)
-                    else:
-                        return redirect(url_for("index"))                  
+
+                return redirect(url_for("index"))                  
             # save error messages to display in the template
             flash(error)
 
