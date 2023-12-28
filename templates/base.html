@@ -2,14 +2,16 @@
 <title>{% block title %}{% endblock %} - Flaskr</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
-  <h1><a href="{{ url_for('index')}}">Fru Sleep Tracker</a></h1>
+  {% if g.user %}
+  <h1><a class="nav" href="{{ url_for('index')}}">{{ g.user['username'] }}'s Sleep Tracker</a></h1>
+  {% endif %}
   <ul>
     {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
-      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+      <!--<li><span class="user">{{ g.user['username'] }}</span>-->
+      <li><a class='login' href="{{ url_for('auth.logout') }}">Log Out</a>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+      <li><a class='login' href="{{ url_for('auth.register') }}">Register</a>
+      <li><a class='login' href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
   </ul>
 </nav>

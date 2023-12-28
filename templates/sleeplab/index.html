@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
 
 {% block header %}
-
+<h1>Who put {{ g.user['username'] }} to sleep?</h1>
 {% endblock %}
 
 {% block content %}
-    <label for="title">Who put the Fru to sleep?</label>
     {% if g.user %}
         {% for parent in parents %}
             <form method="post" id="username" action="confirm">
-                <button type="submit" value="{{ parent['parent']}}" name="parent">{{ parent['parent']}}</button>
+                <button class='button-64' type="submit" value="{{ parent['parent']}}" name="parent"><span>{{ parent['parent']}}</span></button>
             </form>
             
         {% endfor %}

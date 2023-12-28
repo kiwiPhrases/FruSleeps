@@ -7,10 +7,16 @@
 
 {% block content %}
   <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Log In">
+    <div class="group">
+    <label class='login' for="username">Username</label>
+    <input class='login'  name="username" id="username" required>
+  </div>
+  <div class="group"></div>
+    <label class='login'  for="password">Password</label>
+    <input class='login'  type="password" name="password" id="password" required>
+  </div>
+  <div class="group">
+    <input class='button-64'  type="submit" value="Log In">
+  </div>
   </form>
 {% endblock %}
