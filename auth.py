@@ -5,7 +5,9 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from FruSleeps.db import get_db
+from . import db
+from .models import Munchkins, Parents, SleepTimes
+from sqlalchemy import exc
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -16,121 +18,84 @@ def register():
         username = request.form['username']
         password = request.form['password']
         repassword = request.form['repassword']
-        db = get_db()
+        email = request.form['email']
+        #db = get_db()
         error = None
 
         if not username:
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif not email:
+            error = 'Email is required.'
         elif password!=repassword:
             error = 'Passwords do not match'
 
         if error is None:
+            newuser = Munchkins(username=username, email=email, password=password)
             try:
-                db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
-                )
-                db.commit()
-            except db.IntegrityError:
+                db.session.add(newuser)
+
+                db.session.commit()
+            except exc.IntegrityError:
+                db.session.rollback()
                 error = f"User {username} is already registered."
             else:
                 return redirect(url_for("auth.login"))
 
         flash(error)
-
     return render_template('auth/register.html')
     
 
+def chkparents():
+    # check if there are parents registered for this child
+
+    # fetch current user
+    username = session.get('username')
+    # fetch existing records for parents
+    parents = Parents.query.filter_by(munchkin=username).all()
+    
+    # if there's at least 1 parent then redirect to index page
+    if parents:
+        return('index')
+    # if there are no parents then add parents
+    if not parents:
+        return('auth.addparents')
+    
 # function for login
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    # clear out existing login if going to login
+    user_id = session.get('username')
+    if user_id is not None:
+        session.clear()
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
+
         error = None
-        user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
-        ).fetchone()
+
+        user = Munchkins.query.filter_by(username = username).first()
 
         if user is None:
             error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
+        #elif not check_password_hash(user.password, password):
+        elif not user.password==password:
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
-            session['username'] = user['username']
-            #return redirect(url_for('index'))
-            return redirect(url_for('auth.addparents'))
+
+            session['username'] = user.username 
+
+            gonext = chkparents()
+            #return gonext
+            return redirect(url_for(gonext))
 
         flash(error)
 
     return render_template('auth/login.html')
-
-# function for adding the parents
-@bp.route('/addparents', methods=('GET', 'POST'))
-def addparents():
-    # check if there are parents registered for this child
-    db = get_db()
-    
-    # fetch current user
-    username = session.get('username')
-
-    parres = db.execute("SELECT parent FROM parents WHERE munchkin=?",(username,)).fetchall()
-
-    # if there are no parents then add parents
-    # if there's at least 1 parent then redirect to index page
-    if len(parres)>1:
-        return redirect(url_for('index'))
-    if len(parres)<=1:
-        #return("%d" %len(parres))
-        if request.method=='POST': 
-            par1 = request.form['parent1']
-            par2 = request.form['parent2']
-            error = None
-            db = get_db()
-    
-            # check parent inputs. This forces two parents...not great but for now meh
-            if not par1:
-                error = "Caregiver 1 is required"
-            elif not par2:
-                error = "Caregiver 2 is required"
-
-            if error is None:
-                for par in [par1,par2]:
-
-                        db.execute(
-                            "INSERT INTO parents (munchkin, parent) VALUES (?, ?)",
-                            (username, par),
-                        )
-                        db.commit()
-
-                return redirect(url_for("index"))                  
-            # save error messages to display in the template
-            flash(error)
-
-        return render_template('auth/addparents.html')        
-
-@bp.before_app_request
-def load_logged_in_user():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
-        ).fetchone()
-
-
-@bp.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('auth.login'))            
 
 def login_required(view):
     @functools.wraps(view)
@@ -141,3 +106,57 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view    
+
+# function for adding the parents
+# make this accept up to, say, 5 fields
+# make number of parents being entered dynamic though 
+# 2 is a minimum
+# set default
+# write down directions for this form
+# redirect to this form on /addparents click
+@bp.route('/addparents', methods=('GET', 'POST'))
+@login_required
+def addparents():
+    #return("%d" %len(parres))
+    username = session.get('username')
+
+    if request.method=='POST':
+        error = None
+        formparents = []
+        for i in range(2):
+            if not request.form['parent%d' %(i+1)]:
+                error = "Caregiver %d is required" %(i+1)
+            elif request.form['parent%d' %(i+1)]:
+                formparents.append(request.form['parent%d' %(i+1)])
+
+        if error is None:
+            for i,par in enumerate(formparents):
+                    newparent = Parents(munchkin=username, parent=par)
+                    try:
+                        db.session.add(newparent)
+                        db.session.commit()
+                    except exc.IntegrityError:
+                        db.session.rollback()
+                        error='Issue in adding parents'
+
+            return redirect(url_for("index"))                  
+        # save error messages to display in the template
+        flash(error)
+
+    return render_template('auth/addparents.html')        
+
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('username')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = Munchkins.query.filter_by(username = user_id).first()
+
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('auth.login'))            
+
