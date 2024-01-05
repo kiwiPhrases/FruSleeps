@@ -2,18 +2,31 @@
 <title>{% block title %}{% endblock %} - Sleep Tracker</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
+
+  <a class="login" href="{{url_for('about.about')}}">About</a>
+
   {% if g.user %}
-  <h1><a class="nav" href="{{ url_for('index')}}">{{ g.user['username'] }}'s Sleep Tracker</a></h1>
+  <!--<h1><a class="nav" href="{{ url_for('index')}}">{{ g.user['username'] }}'s Sleep Tracker</a></h1>-->
+  <h1><a class="nav" href="{{ url_for('index')}}">FruZzZ</a></h1>
+  {% else %}
+  <h1><a class="nav" href="{{ url_for('auth.login') }}">FruZzZ</a></h1>
   {% endif %}
   <ul>
+    <!--<li><a class="login" href="{{url_for('about.about')}}">About</a></li>-->
     {% if g.user %}
       <!--<li><span class="user">{{ g.user['username'] }}</span>-->
       <li><a class='login' href="{{ url_for('auth.logout') }}">Log Out</a>
+        
+      <!--<li><a class='login' href="{{url_for('sleepdash')}}">Sleepdash</a></li> -->
+       
     {% else %}
       <li><a class='login' href="{{ url_for('auth.register') }}">Register</a>
       <li><a class='login' href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
   </ul>
+  {% if g.user %}
+
+  {% endif %} 
 </nav>
 <section class="content">
   <header>
@@ -24,3 +37,15 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </section>
+
+{% block footer%}
+<hr>
+<section class="footer">
+  <ul class="footer">
+    <li class="footer">In case you encounter errors, please contact the author via <a class="about" href="burinski@usc.edu">e-mail</a></li>
+    <li class="footer">&copy; 2024 Gene Burinskiy </li>
+</ul>
+</section>
+{% endblock %}
+
+

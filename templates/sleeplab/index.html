@@ -12,6 +12,10 @@
             </form>
             
         {% endfor %}
+        <hr>
+            <form action="{{ url_for('sleepdash.sleepdash') }}">
+            <button class='button-64' type="submit"><span>Sleep Dashboard</span></button>
+        </form>
     {% endif %}
 
 {% endblock %}

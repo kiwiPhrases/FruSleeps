@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}About{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<section>
+<div class="about">
+    <p>With this app you can</p>
+    <ul>
+        <li>track which caregiver put the munchkin to sleep</li>
+        <li>record the time when the munchkin went to sleep</li>
+        <li>observe your munchkin's sleep pattern</li>
+    </ul>
+
+    <p><a class='about' href="{{ url_for('auth.register') }}">Registration</a> is solely to keep track of the munchkin's sleep data</p>
+</div>
+</section>
+
+
+{% endblock %}
+
+
+
+

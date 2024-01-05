@@ -54,15 +54,23 @@ def confirm():
 @bp.route("/mkrecord",methods=("GET",'POST'))
 @login_required        
 def mkrecord():
+    
+    # grab the input entries
     parent = request.form['parent']
     zzzdate = request.form['date']
     zzztime = request.form['time']
+    # save into formvals in case confirmation fails on the backend
     formvals = {'parent':parent,'sleepdate':zzzdate,'sleeptime':zzztime}
+
     if request.method=='POST':
+        # grab username from the session
         munchkin = session.get('username')
         #return "|".join(request.form.keys())
         error=None
+        # make model instance to be added into the db
         st = SleepTimes(munchkin=munchkin, parent=parent,sleeptime=" ".join([zzzdate, zzztime]))
+        # try inserting. If success then redirect to sleep dashboard
+        # if fail then rollback, display error, and return to confirmation page
         try:
             db.session.add(st)
             db.session.commit()

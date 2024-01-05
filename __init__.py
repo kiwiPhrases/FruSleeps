@@ -16,21 +16,24 @@ def create_app(config_name='development',test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
-    app.secret_key = "super secret key"
+    app.secret_key = "super secret key" #this really needs to come from env
     config[config_name].init_app(app)
     
     db.init_app(app)
     migrate = Migrate(app, db)
     
+    from . import about
+    app.register_blueprint(about.bp)
+    #app.add_url_rule("/",endpoint='about')
 
     # register authorization blueprint
     from . import auth
     app.register_blueprint(auth.bp)
 
-    @app.route('/hello')
-    def hello():
-        #db = get_db()
-        return "%d" %db.session.execute(text("SELECT 1")).fetchone()[0]
+    #@app.route('/hello')
+    #def hello():
+    #    #db = get_db()
+    #    return "%d" %db.session.execute(text("SELECT 1")).fetchone()[0]
 
     # register sleep button blueprint
     from . import sleeplab
