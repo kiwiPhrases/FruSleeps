@@ -20,6 +20,7 @@ class DevelopmentConfig(Config):
         raise RuntimeError("DATABASE_URL is not set")
     DEBUG=True
     SQLALCHEMY_DATABASE_URI = os.getenv("POSTGRESQL_ADDON_URI")
+    SECRET_KEY=os.getenv("SECRET_KEY")
 
 class TestingConfig(Config):
    DEBUG = True

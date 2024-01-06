@@ -34,6 +34,7 @@ def sleepdash():
 
     # process data
     df.loc[:,'sleeptime'] = pd.to_datetime(df.sleeptime, format = '%Y-%m-%d %H:%M')
+    df.sort_values('sleeptime',inplace=True)
 
     #df.loc[:,'hour'] = df.sleeptime.dt.hour
     #df.loc[:,'minutes'] = df.sleeptime.dt.minute
