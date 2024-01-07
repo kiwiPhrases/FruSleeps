@@ -1,0 +1,17 @@
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "FruZzZ"
+version = "1.0.0"
+description = "FruZzZ sleep tracker app"
+authors = [
+    {name = "Gene Burinskiy", email = "gene.burinsky@gmail.com"},
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "flask",
+]
+
