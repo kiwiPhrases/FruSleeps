@@ -8,3 +8,7 @@ __pycache__/
 __pycache__/
 .env
 migrations/
+share/jupyter
+lib64/python3.10
+lib/python3.10
+pyvenv.cfg
