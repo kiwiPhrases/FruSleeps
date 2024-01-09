@@ -3,7 +3,7 @@ requires = ["flit_core<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "FreyaSleeps"
+name = "FruSleeps"
 version = "1.0.0"
 description = "FruZzZ sleep tracker app"
 authors = [
