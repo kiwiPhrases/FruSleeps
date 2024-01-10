@@ -11,12 +11,14 @@ from flask.cli import FlaskGroup
 db = SQLAlchemy()
 from .models import Munchkins, Parents, SleepTimes
 
-def create_app(config_name='development',test_config=None):
-    
+def create_app():
+    #config_name='default',test_config=None
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(config[config_name])
-    #app.secret_key = "super secret key" #this really needs to come from env
+    #app.config.from_object(config.get(config_name or 'default'))
+    config_name = 'default'
+    app.config.from_object(config.get(config_name))
+    #app.secret_key = "secret key" #this comes from env
     config[config_name].init_app(app)
     
     db.init_app(app)
@@ -29,11 +31,6 @@ def create_app(config_name='development',test_config=None):
     # register authorization blueprint
     from . import auth
     app.register_blueprint(auth.bp)
-
-    #@app.route('/hello')
-    #def hello():
-    #    #db = get_db()
-    #    return "%d" %db.session.execute(text("SELECT 1")).fetchone()[0]
 
     # register sleep button blueprint
     from . import sleeplab
