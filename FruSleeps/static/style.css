@@ -1,5 +1,5 @@
 html { font-family: sans-serif; background: #001535; padding: 1rem; }
-body { max-width: 600px; margin: 0 auto; background-color:#001535; }
+body { max-width: 90%; margin: 0 auto; background-color:#001535; }
 h1 { font-family: serif; color: #fcfcfc; margin: 1rem 0; text-align: center;}
 h1.a { color: #e60808}
 a.login { color: #00ccff; font-size:1.2em; text-decoration: none}
