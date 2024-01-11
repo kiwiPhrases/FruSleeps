@@ -2,7 +2,8 @@ html { font-family: sans-serif; background: #001535; padding: 1rem; }
 body { max-width: 600px; margin: 0 auto; background-color:#001535; }
 h1 { font-family: serif; color: #fcfcfc; margin: 1rem 0; text-align: center;}
 h1.a { color: #e60808}
-a.login { color: #0084ff; }
+a.login { color: #00ccff; font-size:1.2em; text-decoration: none}
+a.login:hover { color: #00eeff; text-decoration: underline}
 span.user {color:#863aff; font-weight: bold;}
 a.nav { color: #ffffff; font-size: 1.5em; text-align: center;}
 hr { border: none; border-top: 1px solid lightgray; }
@@ -27,14 +28,102 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content textarea { min-height: 12em; resize: vertical; }
 input.danger { color: #cc2f2e; }
 
-a.nav {color:#a7d7ff}
+a.nav {color:#ab55fc; font-size:2.5em}
 a.nav:hover {color:#6818fc}
 /*input.textbox {background:#a3eaff; padding: 1px; font-size: 1em;}*/
 
 /*label {color:#863aff; font-weight: bold; font-size:1.2em;}*/
 
 
-/* CSS code courtesy of: https://getcssscan.com/css-buttons-examples */
+div.group {display:column;
+    flex-direction: row;
+     justify-content: center;
+      align-items: center;
+    max-width:70%}
+label.label {
+       margin-right:15px;
+       color:#9756ff;
+       font-weight:bold;
+       font-size:1.2em;
+       padding:5px;
+       float:left;
+    }
+input.input {border-radius:5px;
+    text-align:center;
+    background:#00327e;
+    padding:5px;
+    font-size:1.2em;
+    color:#FFFFFF;
+    box-shadow:0px;
+    outline:0px;
+    border:0px;
+    max-width:60%;
+float:right;}
+/*input[type=submit] { align-self: start; min-width: 5em; }*/
+
+ul.nav {display: column;
+  text-align:center;
+  flex-direction: column;
+}
+
+li.login {margin: -3px 0;
+}
+
+.login {display:grid;
+    flex-direction: row;
+     justify-content: center;
+      align-items: center;}
+input.login {border-radius:5px;
+  text-align:center;
+ background:#00327e;
+ padding:5px;
+ max-width:100%;
+ font-size:1.5em;
+ color:#c29dff;
+ box-shadow:0px;
+ outline:0px;
+ border:0px;}
+ ::placeholder {
+    color: #cccccc;
+    font-weight:bold;
+    opacity: 1; /* Firefox */
+  }
+  input:focus::placeholder {
+    color: transparent;
+  }
+
+  div.about {
+    color:white;
+    font-size:1em;
+  }
+
+  a.about {
+    color:white; 
+  }
+  a.about:link {
+    color:rgb(134, 116, 143);;
+    text-decoration: underline;
+  }
+
+  a.about:hover {
+    color:#c29dff;;
+  }
+
+  section.footer {
+    color:rgb(134, 116, 143);
+    display:grid;
+    flex-direction: row;
+    font-size:.75em;
+  }
+
+  section.footer.a:link {
+      color:rgb(134, 116, 143);
+      text-decoration: underline;
+      font-size:.75em;
+  }
+
+
+  /* CSS code courtesy of: https://getcssscan.com/css-buttons-examples */
 /* CSS */
 .button-64 {
   align-items: center;
@@ -84,82 +173,3 @@ a.nav:hover {color:#6818fc}
     min-width: 196px;
   }
 }
-
-
-div.group {display:column;
-    flex-direction: row;
-     justify-content: center;
-      align-items: center;
-    max-width:60%}
-label.label {
-       margin-right:15px;
-       color:#9756ff;
-       font-weight:bold;
-       font-size:1.2em;
-       padding:5px;
-       float:left;
-    }
-input.input {border-radius:5px;
-    text-align:center;
-    background:#00327e;
-    padding:5px;
-    font-size:1em;
-    color:#FFFFFF;
-    box-shadow:0px;
-    outline:0px;
-    border:0px;
-float:right;}
-/*input[type=submit] { align-self: start; min-width: 5em; }*/
-
-.login {display:grid;
-    flex-direction: row;
-     justify-content: center;
-      align-items: center;}
-input.login {border-radius:5px;
-  text-align:center;
- background:#00327e;
- padding:5px;
- max-width:100%;
- font-size:1em;
- color:#c29dff;
- box-shadow:0px;
- outline:0px;
- border:0px;}
- ::placeholder {
-    color: #cccccc;
-    font-weight:bold;
-    opacity: 1; /* Firefox */
-  }
-  input:focus::placeholder {
-    color: transparent;
-  }
-
-  div.about {
-    color:white;
-    font-size:1em;
-  }
-
-  a.about {
-    color:white; 
-  }
-  a.about:link {
-    color:rgb(134, 116, 143);;
-    text-decoration: underline;
-  }
-
-  a.about:hover {
-    color:#c29dff;;
-  }
-
-  section.footer {
-    color:rgb(134, 116, 143);
-    display:grid;
-    flex-direction: row;
-    font-size:.75em;
-  }
-
-  section.footer.a:link {
-      color:rgb(134, 116, 143);
-      text-decoration: underline;
-      font-size:.75em;
-  }

@@ -1,5 +1,5 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Sleep Tracker</title>
+<title>{% block title %}{% endblock %}Sleep Tracker</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
 
@@ -11,17 +11,17 @@
   {% else %}
   <h1><a class="nav" href="{{ url_for('auth.login') }}">FruZzZ</a></h1>
   {% endif %}
-  <ul>
+  <ul class="nav">
     <!--<li><a class="login" href="{{url_for('about.about')}}">About</a></li>-->
     {% if g.user %}
       <!--<li><span class="user">{{ g.user['username'] }}</span>-->
-      <li><a class='login' href="{{ url_for('auth.logout') }}">Log Out</a>
+      <li class='login'><a class='login' href="{{ url_for('auth.logout') }}">Log Out</a>
         
       <!--<li><a class='login' href="{{url_for('sleepdash')}}">Sleepdash</a></li> -->
        
     {% else %}
-      <li><a class='login' href="{{ url_for('auth.register') }}">Register</a>
-      <li><a class='login' href="{{ url_for('auth.login') }}">Log In</a>
+      <li class='login'><a class='login' href="{{ url_for('auth.register') }}">Register</a>
+      <li class='login'><a class='login' href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
   </ul>
   {% if g.user %}

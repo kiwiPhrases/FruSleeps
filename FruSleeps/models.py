@@ -23,6 +23,8 @@ class SleepTimes(db.Model):
     munchkin = sa.Column(sa.String(80), nullable=False)
     parent = sa.Column(sa.String(80),nullable=False)
     sleeptime = sa.Column(sa.DateTime, nullable=False)
+    #sleeptype = sa.Column(sa.String(80), default='sleep',nullable=False)
+    #sleeploc = sa.Column(sa.String(80), default='home',nullable=False)
     #sleepType = sa.Column(sa.String(10), nullable=False )
 
 
