@@ -37,8 +37,10 @@ def register():
                 db.session.add(newuser)
 
                 db.session.commit()
+                db.session.close()
             except exc.IntegrityError:
                 db.session.rollback()
+                db.session.close()
                 error = f"User {username} is already registered."
             else:
                 return redirect(url_for("auth.login"))
@@ -54,7 +56,7 @@ def chkparents():
     username = session.get('username')
     # fetch existing records for parents
     parents = Parents.query.filter_by(munchkin=username).all()
-    
+    db.session.close()
     # if there's at least 1 parent then redirect to index page
     if parents:
         return('index')
@@ -77,7 +79,7 @@ def login():
         error = None
 
         user = Munchkins.query.filter_by(username = username).first()
-
+        db.session.close()
         if user is None:
             error = 'Incorrect username.'
         #elif not check_password_hash(user.password, password):
