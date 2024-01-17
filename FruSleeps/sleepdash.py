@@ -54,7 +54,8 @@ def sleepdash():
     # for colors check out: https://plotly.com/python/builtin-colorscales/
     meanTime = px.bar(x=summary.parent, y=summary.time, text_auto=True,
         labels={'x': 'Parent', 'y':'Mean Sleep Time (24h)'},
-        color_discrete_sequence= px.colors.sequential.Viridis)
+        color_discrete_sequence= px.colors.sequential.Viridis,
+        title='Average Sleep Start by Parent')
     #meanTime.update_traces(base=3)
     #, text="nation" add text - add custom text
     #, text_auto=True # autotext inside bars (usually the data value)
@@ -62,15 +63,17 @@ def sleepdash():
 
     meanTime.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font={'color':'rgba(255, 95, 31, .9)','size':14})
+        font={'color':'rgba(255, 95, 31, .9)','size':14},
+        title={'xanchor':'center'})
 
     longit = px.line(x=df.sleeptime.dt.date, y=(df.time/60)//1+((df.time/60)%1*60).round(0)/100,
-        labels={'x': 'Date', 'y':'Time of Day (24h)'})
+        labels={'x': 'Date', 'y':'Time of Day (24h)'}, title='Time of Sleep')
         #color_discrete_sequence= px.colors.sequential.Viridis)
 
     longit.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         font={'color':'rgba(255, 95, 31, .9)','size':14},
+        title={'xanchor':'center'},
         xaxis={
             "type": 'date',
             #"tickformat": '%b/%d',
@@ -97,6 +100,7 @@ def sleepdash():
                         #color_continuous_scale= px.colors.sequential.Cividis_r
     parentPie.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
+        title={'xanchor':'center'},
         font={'color':'rgba(255, 95, 31, .9)','size':14})
 
     # dump to JSON

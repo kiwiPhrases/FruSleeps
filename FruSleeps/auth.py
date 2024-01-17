@@ -41,7 +41,7 @@ def register():
             except exc.IntegrityError:
                 db.session.rollback()
                 db.session.close()
-                error = f"User {username} is already registered."
+                error = f"User {username} is already registered or {email} email is already used."
             else:
                 return redirect(url_for("auth.login"))
 
