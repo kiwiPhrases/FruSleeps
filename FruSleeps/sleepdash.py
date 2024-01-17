@@ -73,7 +73,8 @@ def sleepdash():
     longit.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         font={'color':'rgba(255, 95, 31, .9)','size':14},
-        title={'xanchor':'center'},
+        #title={'xanchor':'center'},
+        title_x = .5,
         xaxis={
             "type": 'date',
             #"tickformat": '%b/%d',

@@ -7,11 +7,11 @@ The goal is ease of use so simple buttons to quickly record events
 and minimal yet useful dashboard analytics
 
 
-Author is Gene Burinskiy and all rights are reserved for now.
+Author is Gene Burinskiy.
 
 To-do list:
 
-- [] allow for adding flexible quantity of caregivers up to, say, 5 entities
+- []  allow for adding flexible quantity of caregivers up to, say, 5 entities
     - [] automatically add an "Other" caregiver for everyone
 - [] track regular sleep and nap hours
     - [] if after 6pm, then default to sleep
