@@ -64,7 +64,7 @@ def sleepdash():
     meanTime.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         font={'color':'rgba(255, 95, 31, .9)','size':14},
-        title={'xanchor':'center'})
+        title_x = .5)
 
     longit = px.line(x=df.sleeptime.dt.date, y=(df.time/60)//1+((df.time/60)%1*60).round(0)/100,
         labels={'x': 'Date', 'y':'Time of Day (24h)'}, title='Time of Sleep')
@@ -101,7 +101,7 @@ def sleepdash():
                         #color_continuous_scale= px.colors.sequential.Cividis_r
     parentPie.update_layout(paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        title={'xanchor':'center'},
+        title_x = .5,
         font={'color':'rgba(255, 95, 31, .9)','size':14})
 
     # dump to JSON
