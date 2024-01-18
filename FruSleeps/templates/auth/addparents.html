@@ -9,14 +9,20 @@
 {% block content %}
   <form method="post">
     <!-- this is separate and goes to the parent db-->
-    <div class="group">
-      <label class='label' for="parent1">Caregiver 1</label>
-      <input class='input' name="parent1" id="parent1" required>
-    </div>
-    <div class="group">
-      <label class='label' for="parent2">Caregiver 2</label>
-      <input class='input' name="parent2" id="parent2" required>
-    </div>  
+    {% for i in range(5) %}
+      <div class="group">
+          <label class='label' for={{ 'parent%d'%(i+1) }}>{{ "Caregiver %d" %(i+1)}}</label>
+          {% if not formpars[i] %}
+            {% if i<=1 %}
+              <input class='input' name="{{ 'parent%d'%(i+1) }}" id="{{ 'parent%d'%(i+1) }}" placeholder={{ ph[i] }} required>
+            {% else %}
+            <input class='input' name="{{ 'parent%d'%(i+1) }}" id="{{ 'parent%d'%(i+1) }}" placeholder={{ ph[i] }}>
+            {% endif %}
+          {% elif formpars[i] %}
+            <input class='input' name="{{ 'parent%d'%(i+1) }}" id="{{ 'parent%d'%(i+1) }}" value={{ formpars[i] }} readonly="readonly">
+          {% endif %}
+      </div>
+    {% endfor %}
     <!-- submit the form-->
     <div class="group">
       <input class="button-64" type="submit" value="Register">

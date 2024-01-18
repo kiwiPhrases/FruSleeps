@@ -41,13 +41,14 @@ def confirm():
     parent = request.form['parent']
     error = None
 
-
-
     # get and date and time of sleep
+    #if request.method=="GET":        
     now = datetime.datetime.now()
-
+    #    browsertime = request.args.get("brwtime")
     zzztime = now.time().strftime("%H:%M")
     zzzdate = now.date().strftime("%Y-%m-%d")
+    #zzztime = browsertime.strftime("%H:%M")
+    #zzzdate = browsertime.strftime("%Y-%m-%d")
 
     if SleepTimes.query.filter(and_(SleepTimes.munchkin==munchkin,func.DATE(SleepTimes.sleeptime)==zzzdate)).first():
         error="A time has already been entered for %s today.\nAre you sure you wish to enter another?" %munchkin

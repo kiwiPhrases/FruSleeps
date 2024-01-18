@@ -119,33 +119,57 @@ def login_required(view):
 @bp.route('/addparents', methods=('GET', 'POST'))
 @login_required
 def addparents():
+    # declare whether fields are optional or required
+    ph = ['Required']*2 + ['Optional']*3
+
     #return("%d" %len(parres))
     username = session.get('username')
 
+    # check if there are any parents already registered
+    parents = Parents.query.filter_by(munchkin=username).all()
+    if len(parents)>0:
+        formparents = [p.parent for p in parents]
+        #return render_template('auth/addparents.html', ph=ph)
+    else:
+        formparents = []
+    
+    # process the form
     if request.method=='POST':
         error = None
         formparents = []
-        for i in range(2):
-            if not request.form['parent%d' %(i+1)]:
-                error = "Caregiver %d is required" %(i+1)
-            elif request.form['parent%d' %(i+1)]:
-                formparents.append(request.form['parent%d' %(i+1)])
+        for i in range(5):
+            # require name for parent 1
+            if i<2:
+                if not request.form['parent%d' %(i+1)]:
+                    error = "Caregiver %d is required" %(i+1)
+                elif request.form['parent%d' %(i+1)]:
+                    formparents.append(request.form['parent%d' %(i+1)])
+            # if 2nd parent is not named and Other is already not a parent then enter 'Other'
+            else:
+                #if (not request.form['parent%d' %(i+1)]) and ('Other' not in [x.parent.lower() for x in parents]):
+                #    formparents.append("Other")
+                if request.form['parent%d' %(i+1)]:
+                    formparents.append(request.form['parent%d' %(i+1)])
 
+        # if no new parents, enter new parent info
         if error is None:
             for i,par in enumerate(formparents):
-                    newparent = Parents(munchkin=username, parent=par)
-                    try:
-                        db.session.add(newparent)
-                        db.session.commit()
-                    except exc.IntegrityError:
-                        db.session.rollback()
-                        error='Issue in adding parents'
+                # check if entered parent is already among existing parents
+                # if not, try entering them into the db
+                if par.lower() not in [x.parent.lower() for x in parents]:
+                        newparent = Parents(munchkin=username, parent=par)
+                        try:
+                            db.session.add(newparent)
+                            db.session.commit()
+                        except exc.IntegrityError:
+                            db.session.rollback()
+                            error='Issue in adding parents'
 
             return redirect(url_for("index"))                  
         # save error messages to display in the template
         flash(error)
 
-    return render_template('auth/addparents.html')        
+    return render_template('auth/addparents.html', ph=ph, formpars=formparents)        
 
 @bp.before_app_request
 def load_logged_in_user():
