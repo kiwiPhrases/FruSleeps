@@ -57,7 +57,7 @@ def confirm():
     if request.method=='POST':
         dateformat = "%a %b %d %Y %H:%M:%S"
         localtime = dt.strptime(request.form["hiddenField"][:24],dateformat)
-        zzztime = localtime.strftime("%H:%M:%S")
+        zzztime = localtime.strftime("%H:%M")
         zzzdate = localtime.strftime("%Y-%m-%d")
         #outtime = " ".join([zzzdate, zzztime])
     # get and date and time of sleep
