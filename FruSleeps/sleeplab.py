@@ -8,6 +8,7 @@ from . import db
 from .models import Munchkins, Parents, SleepTimes
 from .auth import login_required
 import re
+from datetime import datetime as dt
 
 bp = Blueprint('sleeplab', __name__)
 
@@ -15,6 +16,18 @@ bp = Blueprint('sleeplab', __name__)
 @bp.route('/hello2')
 def hello2():
     return "%d" %db.session.execute(text("SELECT 1")).fetchone()[0]
+
+@bp.route("/timetest",methods=['GET','POST'])
+def timetest():
+    localtime = None
+    if request.method=='POST':
+        dateformat = "%a %b %d %Y %H:%M:%S"
+        localtime = dt.strptime(request.form["hiddenField"][:24],dateformat)
+        zzztime = localtime.strftime("%H:%M:%S")
+        zzzdate = localtime.strftime("%Y-%m-%d")
+        outtime = " ".join([zzzdate, zzztime])
+        return render_template("/sleeplab/timetest.html",localtime = outtime)
+    return render_template("/sleeplab/timetest.html",localtime = localtime)
 
 
 @bp.route('/')
@@ -41,12 +54,19 @@ def confirm():
     parent = request.form['parent']
     error = None
 
+    if request.method=='POST':
+        dateformat = "%a %b %d %Y %H:%M:%S"
+        localtime = dt.strptime(request.form["hiddenField"][:24],dateformat)
+        zzztime = localtime.strftime("%H:%M:%S")
+        zzzdate = localtime.strftime("%Y-%m-%d")
+        #outtime = " ".join([zzzdate, zzztime])
     # get and date and time of sleep
     #if request.method=="GET":        
-    now = datetime.datetime.now()
+    #now = datetime.datetime.now()
     #    browsertime = request.args.get("brwtime")
-    zzztime = now.time().strftime("%H:%M")
-    zzzdate = now.date().strftime("%Y-%m-%d")
+    #zzztime = now.time().strftime("%H:%M")
+    #zzzdate = now.date().strftime("%Y-%m-%d")
+        
     #zzztime = browsertime.strftime("%H:%M")
     #zzzdate = browsertime.strftime("%Y-%m-%d")
 

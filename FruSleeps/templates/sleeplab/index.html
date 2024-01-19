@@ -8,7 +8,14 @@
     {% if g.user %}
         {% for parent in parents %}
             <form method="post" id="username" action="confirm">
-                <button class='button-64' type="submit" value="{{ parent['parent']}}" name="parent"><span>{{ parent['parent']}}</span></button>
+                <input type='hidden' id='hiddenField' name="hiddenField" value='' />
+                <script>
+                    function mySubmit() {
+                    var time = new Date();
+                    document.forms[0].hiddenField.value=time;
+                    }
+                </script>
+                <button class='button-64' type="submit" value="{{ parent['parent']}}" name="parent" onclick="return mySubmit();"><span>{{ parent['parent']}}</span></button>
             </form>
             
         {% endfor %}

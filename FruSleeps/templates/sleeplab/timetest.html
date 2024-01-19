@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ 
+    <form id='timeForm'  method='post'>
+        <input type='hidden' id='hiddenField' name="hiddenField" value='' />
+        <script>
+            function mySubmit() {
+            var time = new Date();
+            document.forms[0].hiddenField.value=time;
+
+            }
+        </script>
+        <input type="submit" value="Confirm" onclick="return mySubmit();">
+    </form>
+
+
+        <p>"{{ localtime }}"</p>
+
+{% endblock %}
+
