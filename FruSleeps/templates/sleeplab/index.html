@@ -4,17 +4,26 @@
 <h1>Who put {{ g.user['username'] }} to sleep?</h1>
 {% endblock %}
 
+
+
 {% block content %}
+
+<script>
+    function mySubmit() {
+    var time = new Date();
+    document.forms[0].hiddenField.value=time;
+    document.forms[1].hiddenField.value=time;
+    document.forms[2].hiddenField.value=time;
+    document.forms[3].hiddenField.value=time;
+    document.forms[4].hiddenField.value=time;
+    }
+</script>
+
     {% if g.user %}
         {% for parent in parents %}
             <form method="post" id="username" action="confirm">
                 <input type='hidden' id='hiddenField' name="hiddenField" value='' />
-                <script>
-                    function mySubmit() {
-                    var time = new Date();
-                    document.forms[0].hiddenField.value=time;
-                    }
-                </script>
+
                 <button class='button-64' type="submit" value="{{ parent['parent']}}" name="parent" onclick="return mySubmit();"><span>{{ parent['parent']}}</span></button>
             </form>
             
