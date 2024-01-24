@@ -5,8 +5,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from . import db
-from .models import Munchkins, Parents, SleepTimes
+#from . import db
+#from .models import Munchkins, Parents, SleepTimes
 from sqlalchemy import exc
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -32,6 +32,8 @@ def register():
             error = 'Passwords do not match'
 
         if error is None:
+            from . import db
+            from .models import Munchkins
             newuser = Munchkins(username=username, email=email, password=password)
             try:
                 db.session.add(newuser)
@@ -51,7 +53,8 @@ def register():
 
 def chkparents():
     # check if there are parents registered for this child
-
+    from . import db
+    from .models import Parents
     # fetch current user
     username = session.get('username')
     # fetch existing records for parents
@@ -73,6 +76,8 @@ def login():
         session.clear()
 
     if request.method == 'POST':
+        from . import db
+        from .models import Munchkins
         username = request.form['username']
         password = request.form['password']
 

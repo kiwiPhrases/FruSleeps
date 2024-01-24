@@ -12,13 +12,14 @@ import numpy as np
 #from matplotlib import colormaps as cms
 
 from .auth import login_required
-from . import db
+#from . import db
 
 bp = Blueprint('sleepdash', __name__)
 
 @bp.route("/sleepdash")
 @login_required
 def sleepdash():
+    from . import db
     # grab sleepTimes for the user
     munchkin = session.get('username')
 

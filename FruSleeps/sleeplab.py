@@ -4,8 +4,8 @@ from flask import (
 from werkzeug.exceptions import abort
 from sqlalchemy import text, inspect, exc, func, or_, and_
 
-from . import db
-from .models import Munchkins, Parents, SleepTimes
+#from . import db
+#from .models import Munchkins, Parents, SleepTimes
 from .auth import login_required
 import re
 from datetime import datetime as dt
@@ -33,6 +33,8 @@ def timetest():
 @bp.route('/')
 @login_required
 def index():
+    from . import db
+    from .models import Parents
     munchkin = session.get('username')
 
     if munchkin is None:
@@ -48,6 +50,8 @@ def index():
 @bp.route("/confirm",methods=("GET",'POST'))
 @login_required
 def confirm():
+    from . import db
+    from .models import SleepTimes
     import datetime
     # grab data from the button submission
     munchkin = session.get('username')
@@ -112,6 +116,8 @@ def mkrecord():
             return render_template('sleeplab/confirm.html',formvals = formvals)
 
         # make model instance to be added into the db
+        from . import db
+        from .models import SleepTimes
         st = SleepTimes(munchkin=munchkin, parent=parent,sleeptime=" ".join([zzzdate, zzztime]))
 
         # try inserting. If success then redirect to sleep dashboard
