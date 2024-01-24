@@ -69,10 +69,29 @@ ul.nav {display: column;
 li.login {margin: -3px 0;
 }
 
+form.login {display:grid;
+  flex-direction: row;
+   justify-content: center;
+    align-items: center;
+}
+
+.errors li {
+  display:column;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left;
+  color:#e44800;
+  font-size:1em;
+  font-weight:bold;
+  list-style-type:none;
+  margin: -30px 0;
+}
+
 .login {display:grid;
     flex-direction: row;
      justify-content: center;
       align-items: center;}
+
 input.login {border-radius:5px;
   text-align:center;
  background:#00327e;

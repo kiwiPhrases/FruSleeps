@@ -4,7 +4,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from .forms.authforms import RegistrationForm, LoginForm
 #from . import db
 #from .models import Munchkins, Parents, SleepTimes
 from sqlalchemy import exc
@@ -12,8 +12,8 @@ from sqlalchemy import exc
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 # function for registering users
-@bp.route('/register', methods=('GET', 'POST'))
-def register():
+#@bp.route('/register', methods=('GET', 'POST'))
+def registerOld():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -49,6 +49,31 @@ def register():
 
         flash(error)
     return render_template('auth/register.html')
+
+# function for registering users
+@bp.route('/register', methods=('GET', 'POST'))
+def register():
+    form=RegistrationForm(request.form)
+    if (request.method == 'POST') and (form.validate()):
+        from . import db
+        from .models import Munchkins
+        newuser = Munchkins(username=form.username.data,
+                             email=form.email.data,
+                             password=form.password.data)
+        try:
+            db.session.add(newuser)
+            db.session.commit()
+            db.session.close()
+
+        except exc.IntegrityError:
+            db.session.rollback()
+            db.session.close()
+            error = f"User {form.username.data} is already registered or {form.email.data} email is already used."
+        else:
+            return redirect(url_for("auth.login"))
+
+        flash(error)
+    return render_template('auth/register2.html', form=form)
     
 
 def chkparents():
@@ -104,6 +129,45 @@ def login():
 
     return render_template('auth/login.html')
 
+@bp.route('/login2', methods=('GET', 'POST'))
+def login2():
+    # clear out existing login if going to login
+    user_id = session.get('username')
+    if user_id is not None:
+        session.clear()
+
+    form=LoginForm(request.form)
+
+    if (request.method == 'POST') & (form.validate()):
+        from . import db
+        from .models import Munchkins
+
+        username = form.username.data
+        password = form.password.data
+
+        error = None
+
+        user = Munchkins.query.filter_by(username = username).first()
+        db.session.close()
+        if user is None:
+            error = 'Incorrect username.'
+        #elif not check_password_hash(user.password, password):
+        elif not user.password==password:
+            error = 'Incorrect password.'
+
+        if error is None:
+            session.clear()
+
+            session['username'] = user.username 
+
+            gonext = chkparents()
+            #return gonext
+            return redirect(url_for(gonext))
+
+        flash(error)
+
+    return render_template('auth/login2.html',form=form)
+
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -158,6 +222,8 @@ def addparents():
 
         # if no new parents, enter new parent info
         if error is None:
+            from . import db
+            from .models import Parents
             for i,par in enumerate(formparents):
                 # check if entered parent is already among existing parents
                 # if not, try entering them into the db
@@ -183,6 +249,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
+        from .models import Munchkins
         g.user = Munchkins.query.filter_by(username = user_id).first()
 
 
