@@ -188,6 +188,9 @@ def login_required(view):
 @bp.route('/addparents', methods=('GET', 'POST'))
 @login_required
 def addparents():
+    from . import db
+    from .models import Parents
+
     # declare whether fields are optional or required
     ph = ['Required']*2 + ['Optional']*3
 
@@ -244,6 +247,9 @@ def addparents():
 
 @bp.before_app_request
 def load_logged_in_user():
+    from . import db
+    from .models import Munchkins
+    
     user_id = session.get('username')
 
     if user_id is None:
