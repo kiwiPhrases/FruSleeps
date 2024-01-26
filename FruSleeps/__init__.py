@@ -9,7 +9,7 @@ from flask.cli import FlaskGroup
 
 
 db = SQLAlchemy()
-from .models import Munchkins, Parents, SleepTimes
+#from .models import Munchkins, Parents, SleepTimes
 
 def create_app():
     #config_name='default',test_config=None
