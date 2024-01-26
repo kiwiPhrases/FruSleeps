@@ -1,5 +1,6 @@
 #from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import Form, StringField, SubmitField, PasswordField, BooleanField
+from flask_wtf.recaptcha import RecaptchaField
 from wtforms import validators
 
 class RegistrationForm(Form):
@@ -16,6 +17,7 @@ class RegistrationForm(Form):
                             [validators.EqualTo('password',
                                                  message='Passwords must match')],
                              render_kw={"placeholder": "Confirm Password"})
+    recaptcha = RecaptchaField()
     #accept_tos = BooleanField('Accept Terms', [validators.DataRequired()])
 
 class LoginForm(Form):

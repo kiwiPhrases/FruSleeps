@@ -15,6 +15,7 @@ bp = Blueprint('sleeplab', __name__)
 # just check the db connection
 @bp.route('/hello2')
 def hello2():
+    from . import db
     return "%d" %db.session.execute(text("SELECT 1")).fetchone()[0]
 
 @bp.route("/timetest",methods=['GET','POST'])

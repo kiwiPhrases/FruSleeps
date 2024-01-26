@@ -1,4 +1,8 @@
 <!doctype html>
+{% block scripts %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
+
 <title>{% block title %}{% endblock %}Sleep Tracker</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">

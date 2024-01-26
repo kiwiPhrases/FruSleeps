@@ -53,7 +53,10 @@ def registerOld():
 # function for registering users
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+    from . import config
     form=RegistrationForm(request.form)
+
+
     if (request.method == 'POST') and (form.validate()):
         from . import db
         from .models import Munchkins
@@ -78,13 +81,13 @@ def register():
 
 def chkparents():
     # check if there are parents registered for this child
-    from . import db
+    #from . import db
     from .models import Parents
     # fetch current user
     username = session.get('username')
     # fetch existing records for parents
     parents = Parents.query.filter_by(munchkin=username).all()
-    db.session.close()
+    #db.session.close()
     # if there's at least 1 parent then redirect to index page
     if parents:
         return('index')
@@ -101,7 +104,7 @@ def login():
         session.clear()
 
     if request.method == 'POST':
-        from . import db
+        #from . import db
         from .models import Munchkins
         username = request.form['username']
         password = request.form['password']
@@ -109,7 +112,7 @@ def login():
         error = None
 
         user = Munchkins.query.filter_by(username = username).first()
-        db.session.close()
+        #db.session.close()
         if user is None:
             error = 'Incorrect username.'
         #elif not check_password_hash(user.password, password):
@@ -139,7 +142,7 @@ def login2():
     form=LoginForm(request.form)
 
     if (request.method == 'POST') & (form.validate()):
-        from . import db
+        #from . import db
         from .models import Munchkins
 
         username = form.username.data
@@ -148,7 +151,7 @@ def login2():
         error = None
 
         user = Munchkins.query.filter_by(username = username).first()
-        db.session.close()
+        #db.session.close()
         if user is None:
             error = 'Incorrect username.'
         #elif not check_password_hash(user.password, password):
@@ -188,7 +191,7 @@ def login_required(view):
 @bp.route('/addparents', methods=('GET', 'POST'))
 @login_required
 def addparents():
-    from . import db
+    #from . import db
     from .models import Parents
 
     # declare whether fields are optional or required
@@ -235,8 +238,10 @@ def addparents():
                         try:
                             db.session.add(newparent)
                             db.session.commit()
+                            db.session.close()
                         except exc.IntegrityError:
                             db.session.rollback()
+                            db.session.close()
                             error='Issue in adding parents'
 
             return redirect(url_for("index"))                  
@@ -246,10 +251,7 @@ def addparents():
     return render_template('auth/addparents.html', ph=ph, formpars=formparents)        
 
 @bp.before_app_request
-def load_logged_in_user():
-    from . import db
-    from .models import Munchkins
-    
+def load_logged_in_user():    
     user_id = session.get('username')
 
     if user_id is None:

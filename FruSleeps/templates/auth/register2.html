@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% from "_formhelpers.html" import render_field %}
 
+
 {% block header %}
 <h1>{% block title %}Register{% endblock %}</h1>
 {% endblock %}
@@ -11,6 +12,7 @@
     {{ render_field(form.email) }}
     {{ render_field(form.password) }}
     {{ render_field(form.confirm) }}
+    {{ render_field(form.recaptcha) }}
   <div class="login">
     <input class='button-64'  type="submit" value="Register">
   </div>
